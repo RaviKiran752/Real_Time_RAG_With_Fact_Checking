@@ -1,136 +1,260 @@
-# Real-time News RAG with Fact-Checking
+# 📰 Real-time News RAG with Fact-Checking
 
-Hey there! This is my project for building a real-time news analysis system that can actually fact-check claims and detect misinformation. I got tired of reading news and wondering if it's true, so I built this thing that uses AI to help figure out what's real and what's not.
+A comprehensive Retrieval-Augmented Generation (RAG) system that continuously ingests news articles, identifies potential misinformation, and provides fact-checked responses with source verification and credibility scoring.
 
-## What This Does
+## 🎯 Problem Statement
 
-Basically, it's a smart news reader that:
-- Scrapes news articles from URLs you give it
-- Breaks them down into chunks and stores them in a vector database
-- Lets you ask questions and get answers based on the articles you've loaded
-- Fact-checks claims by searching the web for evidence
-- Detects bias in news content
-- Monitors how fresh your content is over time
-- Gives you credibility scores for fact-check results
+This system addresses the critical challenge of information verification in the digital age by:
+- **Real-time news article ingestion and processing**
+- **Misinformation detection algorithms** using transformer-based classification
+- **Source credibility assessment and scoring** with multi-source verification
+- **Fact-checking with evidence retrieval** from web search and local knowledge base
+- **Continuous content updates and monitoring** for temporal fact verification
 
-## How It Works
+## 🏗️ Architecture & Technical Stack
 
-The system uses a few key technologies:
-- **Gemini 1.5 Flash** for generating answers and analyzing text (chose this over Pro for better rate limits)
-- **ChromaDB** (Cloud or local) for storing and searching through article chunks
-- **Serper.dev** for searching the web to find evidence for fact-checking
-- **HuggingFace transformers** for detecting fake news
-- **Streamlit** for the web interface
+### Core Components
+- **LLM & Embeddings**: Google Gemini (1.5 Pro + text-embedding-004)
+- **Vector Database**: ChromaDB Cloud (primary) with local ChromaDB and FAISS fallbacks
+- **Web Evidence**: Serper.dev for Google search results
+- **Content Processing**: Trafilatura + BeautifulSoup for article extraction
+- **Misinformation Detection**: HuggingFace transformers (BERT-based fake news classifier)
+- **UI Framework**: Streamlit for interactive web interface
 
-## Quick Start
+### Technical Features
+- **Multi-tier fallback system** ensuring reliability even with API failures
+- **Intelligent text chunking** with overlap for context preservation
+- **Source diversity scoring** for credibility assessment
+- **Real-time web scraping** with robust error handling
+- **Scalable vector storage** supporting both cloud and local deployments
 
-1. **Clone this repo** and navigate to the directory
-2. **Set up Python environment** (3.11+ recommended)
-3. **Install dependencies**: `pip install -r requirements.txt`
-4. **Create a .env file** with your API keys:
+## 🚀 Quick Start
+
+### Prerequisites
+- Python 3.11+
+- API keys for Gemini, Serper.dev, and ChromaDB Cloud
+
+### Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone <your-repo-url>
+   cd real_time_news_rag_with_fact_checking
    ```
-   GEMINI_API_KEY=your_gemini_key_here
-   SERPER_API_KEY=your_serper_key_here
-   CHROMADB_API_KEY=your_chromadb_key_here
-   CHROMADB_TENANT=your_tenant_id
-   CHROMADB_DATABASE=your_database_name
+
+2. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
    ```
-5. **Run the app**: `streamlit run app.py`
 
-## What You Can Do
+3. **Configure environment variables**
+   Create a `.env` file in the project root:
+   ```env
+   GEMINI_API_KEY=your_gemini_api_key_here
+   SERPER_API_KEY=your_serper_api_key_here
+   CHROMADB_API_KEY=your_chromadb_api_key_here
+   CHROMADB_TENANT=435c9546-30ce-47da-9431-c759362c04b0
+   CHROMADB_DATABASE="Dummy DB"
+   CHROMA_COLLECTION=news_rag
+   
+   # Optional: Use local ChromaDB instead of cloud
+   USE_CHROMA_LOCAL=true
+   ```
 
-### 1. Ingest Articles
-Paste a news article URL and the system will:
-- Scrape the content
-- Break it into manageable chunks
-- Store it in the vector database
-- Analyze it for bias
-- Track when it was added
+4. **Run the application**
+   ```bash
+   streamlit run app.py
+   ```
 
-### 2. Ask Questions (RAG)
-Ask questions about the articles you've loaded:
-- "What happened to Tesla stock today?"
-- "What are the main points about climate change?"
-- The system finds relevant chunks and generates answers
+5. **Open your browser**
+   Navigate to `http://localhost:8501`
 
-### 3. Fact-Check Claims
-Paste a claim and get it fact-checked:
-- Searches the web for evidence
-- Analyzes the evidence
-- Gives you a verdict (Supported/Refuted/Needs more evidence)
-- Provides credibility scores
-- Shows temporal relevance (how fresh the info is)
+## 🔧 Configuration
+
+### API Keys Required
+- **Gemini API Key**: For LLM responses and embeddings
+- **Serper.dev API Key**: For web search evidence retrieval
+- **ChromaDB Cloud API Key**: For vector storage (with local fallback)
+
+### Environment Variables
+| Variable | Description | Default |
+|----------|-------------|---------|
+| `GEMINI_API_KEY` | Google Gemini API key | Required |
+| `SERPER_API_KEY` | Serper.dev API key | Optional |
+| `CHROMADB_API_KEY` | ChromaDB Cloud API key | Optional |
+| `USE_CHROMA_LOCAL` | Use local ChromaDB | `false` |
+
+## 📱 User Interface
+
+The application features three main tabs:
+
+### 1. **Ingest Article**
+- Input news article URLs for processing
+- Automatic text extraction and chunking
+- Vector embedding and storage
+- Real-time processing feedback
+
+### 2. **Ask (RAG)**
+- Query the knowledge base with natural language
+- Retrieval-augmented generation using stored context
+- Configurable retrieval parameters (top-k chunks)
 - Source attribution and context display
 
-## Key Features
+### 3. **Fact-Check a Claim**
+- Input specific claims for verification
+- Automatic claim extraction from longer text
+- Web evidence search and analysis
+- Credibility scoring and verdict generation
+- Source citation and local context matching
 
-- **Real-time monitoring**: Background processes keep your content fresh
-- **Bias detection**: Identifies political, economic, and social bias
-- **Temporal verification**: Checks if facts are still relevant
-- **Enhanced credibility scoring**: Multi-factor analysis of fact-check results
-- **Fallback systems**: Works even if some APIs are down
-- **Clean UI**: Easy to use interface with tabs for different functions
+### Additional Features
+- **Quick Fake News Classifier**: Instant classification of headlines
+- **Real-time Configuration Status**: API key validation and system status
+- **Responsive Design**: Optimized for desktop and mobile use
 
-## API Keys You'll Need
+## 🔍 How It Works
 
-- **Gemini**: Get this from Google AI Studio (free tier: 15 req/min, 1500 req/day)
-- **Serper.dev**: For web search during fact-checking
-- **ChromaDB**: For cloud vector storage (optional, falls back to local)
+### 1. **Content Ingestion Pipeline**
+```
+URL → Web Scraping → Text Extraction → Chunking → Embedding → Vector Storage
+```
 
-## Architecture
+### 2. **RAG Query Flow**
+```
+User Question → Query Embedding → Vector Search → Context Retrieval → LLM Generation → Answer
+```
 
-The system is built around a few core components:
-- **Vector Store**: Handles storage and retrieval of article chunks
-- **Content Monitor**: Background thread that keeps content fresh
-- **Fact-Checker**: Combines web search with AI analysis
-- **Bias Detector**: Keyword-based bias identification
-- **UI Layer**: Streamlit interface for easy interaction
+### 3. **Fact-Checking Process**
+```
+Claim → Web Evidence Search → Multi-Source Analysis → LLM Reasoning → Verdict + Score
+```
 
-## Why I Built It This Way
+### 4. **Misinformation Detection**
+```
+Text Input → BERT Classification → Fake/Real Probability → Confidence Score
+```
 
-I wanted something that could actually work in real-world scenarios, not just a demo. So I focused on:
-- **Reliability**: Multiple fallback options if APIs fail
-- **Performance**: Efficient chunking and retrieval
-- **Usability**: Clean interface that doesn't require technical knowledge
-- **Scalability**: Can handle growing amounts of content
-- **Monitoring**: Built-in tools to see how the system is performing
+## 📊 Key Features
 
-## Limitations
+### Real-time Processing
+- **Continuous ingestion** of news articles
+- **Live fact-checking** with web evidence
+- **Instant classification** of content credibility
 
-- **Rate limits**: Free API tiers have limits
-- **Content freshness**: Web content changes, so facts can become outdated
-- **Bias detection**: Current approach is keyword-based (could be improved with ML)
-- **Source verification**: Relies on web search results (not perfect)
+### Intelligent Retrieval
+- **Semantic search** using state-of-the-art embeddings
+- **Context-aware chunking** preserving article coherence
+- **Multi-source verification** for comprehensive fact-checking
 
-## Future Improvements
+### Scalable Architecture
+- **Cloud-native design** with local fallbacks
+- **Efficient vector storage** supporting large-scale deployments
+- **Modular components** for easy extension and customization
 
-I'm thinking about adding:
-- Better bias detection using ML models
-- Source credibility scoring based on historical accuracy
-- Automated fact-checking workflows
-- Integration with news APIs for automatic ingestion
-- Performance benchmarking tools
-- Real-time alerts for misinformation detection
-## Troubleshooting
+### Robust Error Handling
+- **Graceful degradation** when APIs are unavailable
+- **Multiple fallback strategies** ensuring system reliability
+- **Comprehensive logging** for debugging and monitoring
 
-- **"Module not found" errors**: Make sure you're in the right virtual environment
-- **API rate limits**: Wait a bit or upgrade your API plan
-- **ChromaDB issues**: Check your API keys and tenant settings
-- **Content not loading**: Verify your .env file has the right keys
+## 🧪 Evaluation Metrics
 
-## Contributing
+The system provides several evaluation dimensions:
 
-Feel free to fork this and improve it! Some areas that could use work:
-- Better error handling
-- More sophisticated bias detection
-- Performance optimization
-- Additional data sources
-- Better UI/UX
+- **Retrieval Accuracy**: Context relevance scoring
+- **Response Latency**: End-to-end processing time
+- **Credibility Scoring**: Multi-factor source assessment
+- **Misinformation Detection**: Classification accuracy
+- **Source Diversity**: Evidence breadth and quality
 
-## License
+## 🔮 Future Enhancements
 
-This is just a demo project I built for learning. Use it however you want, but remember it's not production-ready and you should always verify sources yourself.
+- **Multi-modal support** for images and videos
+- **Advanced bias detection** algorithms
+- **Temporal fact verification** with time-series analysis
+- **Collaborative fact-checking** with user contributions
+- **API endpoints** for integration with other systems
+
+## 🛠️ Development
+
+### Project Structure
+```
+real_time_news_rag_with_fact_checking/
+├── app.py                 # Main Streamlit application
+├── requirements.txt       # Python dependencies
+├── README.md             # Project documentation
+├── .env                  # Environment configuration (create this)
+└── data/                 # Local data storage (auto-created)
+    └── chroma/          # Local ChromaDB storage
+```
+
+### Code Organization
+- **Single-file architecture** for rapid deployment
+- **Modular functions** with clear separation of concerns
+- **Comprehensive error handling** and fallback mechanisms
+- **Type hints** for better code maintainability
+
+### Testing
+- **Streamlit interface testing** with user interactions
+- **API integration testing** with various configurations
+- **Fallback mechanism validation** for reliability testing
+
+## 📚 API Documentation
+
+### Vector Store Operations
+- `add(ids, texts, metadatas)`: Store new content
+- `query(query_text, k)`: Retrieve relevant context
+- `_init_store()`: Initialize storage backend
+
+### Fact-Checking Functions
+- `fact_check_claim(claim)`: Verify claim with evidence
+- `extract_claims_gemini(text)`: Extract checkable claims
+- `score_credibility(evidence, verdict)`: Calculate credibility score
+
+### Content Processing
+- `ingest_url(url, label)`: Process and store article
+- `extract_main_text(url)`: Extract article content
+- `chunk_text(text, max_len, overlap)`: Create searchable chunks
+
+## 🚨 Limitations & Considerations
+
+### Current Limitations
+- **API rate limits** may affect high-volume usage
+- **Web scraping** depends on site accessibility
+- **Model accuracy** varies with content complexity
+- **Storage costs** for cloud vector databases
+
+### Best Practices
+- **Verify sources** independently for critical decisions
+- **Monitor API usage** to avoid rate limiting
+- **Regular model updates** for improved accuracy
+- **Backup strategies** for local deployments
+
+## 🤝 Contributing
+
+This project is designed for educational purposes and coursework submission. Contributions are welcome for:
+
+- **Bug fixes** and performance improvements
+- **New feature implementations**
+- **Documentation enhancements**
+- **Testing and validation**
+
+## 📄 License
+
+This project is created for educational coursework purposes. Please ensure compliance with:
+
+- **API terms of service** for external services
+- **Content usage rights** for scraped materials
+- **Academic integrity** requirements
+
+## 📞 Support
+
+For technical support or questions:
+
+- **Check the configuration** in the sidebar
+- **Verify API keys** are properly set
+- **Review error messages** for specific issues
+- **Test with sample URLs** to validate functionality
 
 ---
 
-Built with Python, Streamlit, and a lot of coffee. Hope you find it useful!
+**⚠️ Disclaimer**: This system is designed for educational and research purposes. Always verify information from multiple sources and exercise critical thinking when evaluating claims. The system provides assistance but should not be the sole basis for important decisions.

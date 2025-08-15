@@ -14,87 +14,87 @@ def test_imports():
     
     try:
         import streamlit
-        print(" Streamlit imported successfully")
+        print("✅ Streamlit imported successfully")
     except ImportError as e:
-        print(f" Streamlit import failed: {e}")
+        print(f"❌ Streamlit import failed: {e}")
         return False
     
     try:
         import google.generativeai
-        print(" Google Generative AI imported successfully")
+        print("✅ Google Generative AI imported successfully")
     except ImportError as e:
-        print(f" Google Generative AI import failed: {e}")
+        print(f"❌ Google Generative AI import failed: {e}")
         return False
     
     try:
         import chromadb
-        print(" ChromaDB imported successfully")
+        print("✅ ChromaDB imported successfully")
     except ImportError as e:
-        print(f" ChromaDB import failed: {e}")
+        print(f"❌ ChromaDB import failed: {e}")
         return False
     
     try:
         import transformers
-        print(" Transformers imported successfully")
+        print("✅ Transformers imported successfully")
     except ImportError as e:
-        print(f" Transformers import failed: {e}")
+        print(f"❌ Transformers import failed: {e}")
         return False
     
     try:
         import sentence_transformers
-        print(" Sentence Transformers imported successfully")
+        print("✅ Sentence Transformers imported successfully")
     except ImportError as e:
-        print(f" Sentence Transformers import failed: {e}")
+        print(f"❌ Sentence Transformers import failed: {e}")
         return False
     
     try:
         import faiss
-        print(" FAISS imported successfully")
+        print("✅ FAISS imported successfully")
     except ImportError as e:
-        print(f" FAISS import failed: {e}")
+        print(f"❌ FAISS import failed: {e}")
         return False
     
     try:
         import trafilatura
-        print(" Trafilatura imported successfully")
+        print("✅ Trafilatura imported successfully")
     except ImportError as e:
-        print(f" Trafilatura import failed: {e}")
+        print(f"❌ Trafilatura import failed: {e}")
         return False
     
     try:
         import requests
         import bs4
-        print(" Web scraping libraries imported successfully")
+        print("✅ Web scraping libraries imported successfully")
     except ImportError as e:
-        print(f" Web scraping libraries import failed: {e}")
+        print(f"❌ Web scraping libraries import failed: {e}")
         return False
     
     return True
 
 def test_environment():
     """Test environment variables and configuration"""
-    print("\nTesting environment configuration...")
+    print("\n🔧 Testing environment configuration...")
     
     load_dotenv()
     
     # Check required API keys
     gemini_key = os.getenv("GEMINI_API_KEY")
     if gemini_key:
-        print(" Gemini API key found")
+        print("✅ Gemini API key found")
     else:
-        print("  Gemini API key not found (will use fallbacks)")
+        print("⚠️  Gemini API key not found (will use fallbacks)")
     
     serper_key = os.getenv("SERPER_API_KEY")
     if serper_key:
-        print(" Serper.dev API key found")
+        print("✅ Serper.dev API key found")
     else:
-        print("  Serper.dev API key not found (web evidence disabled)")
+        print("⚠️  Serper.dev API key not found (web evidence disabled)")
     
     chroma_key = os.getenv("CHROMADB_API_KEY")
     if chroma_key:
-        print(" ChromaDB API key found")
+        print("✅ ChromaDB API key found")
     else:
-        print("  ChromaDB API key not found (will use local fallback)")
+        print("⚠️  ChromaDB API key not found (will use local fallback)")
     
     return True
 
@@ -111,7 +111,7 @@ def test_app_import():
         print(f"   App title: {app.APP_TITLE}")
         return True
     except Exception as e:
-        print(f" App import failed: {e}")
+        print(f"❌ App import failed: {e}")
         return False
 
 def test_basic_functionality():
@@ -124,24 +124,24 @@ def test_basic_functionality():
         # Test text processing
         test_text = "This is a test article about artificial intelligence and machine learning."
         chunks = app.chunk_text(test_text, max_len=50, overlap=10)
-        print(f" Text chunking: {len(chunks)} chunks created")
+        print(f"✅ Text chunking: {len(chunks)} chunks created")
         
         # Test text normalization
         normalized = app.normalize_text("  Multiple    spaces   and\nnewlines  ")
-        print(f" Text normalization: '{normalized}'")
+        print(f"✅ Text normalization: '{normalized}'")
         
         # Test claim extraction (fallback mode)
         claims = app.extract_claims_gemini("Test paragraph with multiple sentences. Second sentence here. Third sentence.")
-        print(f" Claim extraction: {len(claims)} claims extracted")
+        print(f"✅ Claim extraction: {len(claims)} claims extracted")
         
         return True
     except Exception as e:
-        print(f" Basic functionality test failed: {e}")
+        print(f"❌ Basic functionality test failed: {e}")
         return False
 
 def main():
     """Run all tests"""
-    print(" Real-time News RAG System Test Suite")
+    print("🚀 Real-time News RAG System Test Suite")
     print("=" * 50)
     
     tests = [
@@ -159,17 +159,17 @@ def main():
             if test():
                 passed += 1
         except Exception as e:
-            print(f" Test {test.__name__} crashed: {e}")
+            print(f"❌ Test {test.__name__} crashed: {e}")
     
     print("\n" + "=" * 50)
-    print(f" Test Results: {passed}/{total} tests passed")
+    print(f"📊 Test Results: {passed}/{total} tests passed")
     
     if passed == total:
-        print(" All tests passed! Your system is ready to run.")
+        print("🎉 All tests passed! Your system is ready to run.")
         print("\nTo start the application:")
         print("   streamlit run app.py")
     else:
-        print("  Some tests failed. Please check the errors above.")
+        print("⚠️  Some tests failed. Please check the errors above.")
         print("\nCommon solutions:")
         print("   1. Install missing packages: pip install -r requirements.txt")
         print("   2. Check your .env file configuration")
