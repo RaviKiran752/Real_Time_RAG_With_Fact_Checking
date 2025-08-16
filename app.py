@@ -237,6 +237,8 @@ class VectorStore:
 
     def query(self, query_text: str, k: int = 8) -> List[Dict[str, Any]]:
         qv = embed_texts([query_text])[0]
+        if self.index is None:
+            return []
         if self.kind.startswith("chroma"):
             res = self.collection.query(query_embeddings=[qv], n_results=k)
             out = []
