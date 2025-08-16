@@ -50,12 +50,21 @@ from sentence_transformers import SentenceTransformer
 # ---------- Enhanced Config & Setup ----------
 load_dotenv()
 
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
-SERPER_API_KEY = os.getenv("SERPER_API_KEY")
+# GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+# SERPER_API_KEY = os.getenv("SERPER_API_KEY")
 
-CHROMADB_API_KEY = os.getenv("CHROMADB_API_KEY")
-CHROMADB_TENANT = os.getenv("CHROMADB_TENANT", "435c9546-30ce-47da-9431-c759362c04b0")
-CHROMADB_DATABASE = os.getenv("CHROMADB_DATABASE", "Dummy DB")
+# CHROMADB_API_KEY = os.getenv("CHROMADB_API_KEY")
+# CHROMADB_TENANT = os.getenv("CHROMADB_TENANT", "435c9546-30ce-47da-9431-c759362c04b0")
+# CHROMADB_DATABASE = os.getenv("CHROMADB_DATABASE", "Dummy DB")
+import streamlit as st
+import os
+
+GEMINI_API_KEY = st.secrets.get("GEMINI_API_KEY", os.getenv("GEMINI_API_KEY"))
+SERPER_API_KEY = st.secrets.get("SERPER_API_KEY", os.getenv("SERPER_API_KEY"))
+CHROMADB_API_KEY = st.secrets.get("CHROMADB_API_KEY", os.getenv("CHROMADB_API_KEY"))
+CHROMADB_TENANT = st.secrets.get("CHROMADB_TENANT", os.getenv("CHROMADB_TENANT"))
+CHROMADB_DATABASE = st.secrets.get("CHROMADB_DATABASE", os.getenv("CHROMADB_DATABASE"))
+
 CHROMA_COLLECTION = os.getenv("CHROMA_COLLECTION", "news_rag")
 
 APP_TITLE = " Real-time News RAG with Fact-Checking — Enhanced (Gemini Flash)"
@@ -237,8 +246,7 @@ class VectorStore:
 
     def query(self, query_text: str, k: int = 8) -> List[Dict[str, Any]]:
         qv = embed_texts([query_text])[0]
-        if self.index is None:
-            return []
+        
         if self.kind.startswith("chroma"):
             res = self.collection.query(query_embeddings=[qv], n_results=k)
             out = []
