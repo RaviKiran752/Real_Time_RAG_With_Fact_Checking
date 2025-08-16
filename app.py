@@ -902,4 +902,4 @@ if st.button("Classify"):
     if bias_result["detected_bias_types"]:
         st.warning(f"Detected bias types: {', '.join(bias_result['detected_bias_types'])}")
 
-st.caption(f"© {datetime.now().year} — Demo RAG")
+st.caption(f"{datetime.now().year} -- Demo RAG")
